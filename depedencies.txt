@@ -1,0 +1,11 @@
+# deps utama
+npm i @nestjs/config @nestjs/jwt passport passport-jwt bcrypt
+npm i @nestjs/axios rxjs class-validator class-transformer
+npm i @golevelup/nestjs-rabbitmq amqplib
+npm i ioredis @supabase/supabase-js
+npm i @prisma/client
+npm i -D prisma @types/bcrypt @types/express
+
+# untuk upload (multer)
+npm i @nestjs/platform-express multer
+npm i -D @types/multer

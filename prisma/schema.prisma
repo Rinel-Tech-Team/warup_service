@@ -21,6 +21,24 @@ model Role {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime? @db.Timestamp()
+  User      User[]
 
+  @@index([deletedAt])
+}
+
+model User {
+  id        String    @id @default(uuid()) @db.Uuid()
+  full_name String    @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  username  String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  status    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? @db.Timestamp()
+  roleId    String    @db.Uuid()
+  role      Role?     @relation(fields: [roleId], references: [id])
+
+  @@index([roleId])
   @@index([deletedAt])
 }

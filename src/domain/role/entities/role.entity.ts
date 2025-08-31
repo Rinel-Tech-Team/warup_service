@@ -1,10 +1,17 @@
+import { UserEntity } from 'src/domain/user/entities/user.entity';
+
 export class RoleEntity {
-  constructor(
-    public readonly id: string,
-    public name: string,
-    public status: boolean,
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date,
-    public readonly deletedAt: Date,
-  ) {}
+  id: string;
+  name: string;
+  status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
+
+  // Relasi
+  users?: UserEntity[];
+
+  constructor(data: Partial<RoleEntity>) {
+    Object.assign(this, data);
+  }
 }

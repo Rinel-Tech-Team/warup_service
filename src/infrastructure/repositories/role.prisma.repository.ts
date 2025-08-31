@@ -17,41 +17,28 @@ export class RolePrismaRepository implements RoleRepository {
         deletedAt: data.deletedAt! || null,
       },
     });
-    return new RoleEntity(
-      r.id,
-      r.name,
-      r.status,
-      r.createdAt,
-      r.updatedAt,
-      r.deletedAt!,
-    );
+    return r;
   }
   async findByName(name: string): Promise<RoleEntity | null> {
     const r = await this.prisma.role.findUnique({ where: { name } });
-    return r
-      ? new RoleEntity(
-          r.id,
-          r.name,
-          r.status,
-          r.createdAt,
-          r.updatedAt,
-          r.deletedAt!,
-        )
-      : null;
+    return r ? r : null;
   }
   async findAll(params: {
     page: number;
     limit: number;
     search?: string;
   }): Promise<Page<RoleEntity>> {
-    const where: Prisma.RoleWhereInput = params.search?.trim()
-      ? {
-          name: {
-            contains: params.search,
-            mode: Prisma.QueryMode.insensitive,
-          },
-        }
-      : {};
+    const where: Prisma.RoleWhereInput = {
+      deletedAt: null,
+      ...(params.search?.trim()
+        ? {
+            name: {
+              contains: params.search,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          }
+        : {}),
+    };
 
     const [total, rows] = await this.prisma.$transaction([
       this.prisma.role.count({ where }),
@@ -63,17 +50,7 @@ export class RolePrismaRepository implements RoleRepository {
       }),
     ]);
 
-    const data = rows.map(
-      (r) =>
-        new RoleEntity(
-          r.id,
-          r.name,
-          r.status,
-          r.createdAt,
-          r.updatedAt,
-          r.deletedAt!,
-        ),
-    );
+    const data = rows.map((r) => r);
 
     const meta = buildPagination(params.page, params.limit, total);
 
@@ -81,32 +58,19 @@ export class RolePrismaRepository implements RoleRepository {
   }
   async findById(id: string): Promise<RoleEntity | null> {
     const r = await this.prisma.role.findUnique({ where: { id } });
-    return r
-      ? new RoleEntity(
-          r.id,
-          r.name,
-          r.status,
-          r.createdAt,
-          r.updatedAt,
-          r.deletedAt!,
-        )
-      : null;
+    return r && !r.deletedAt ? r : null;
   }
   async update(
     id: string,
     data: Partial<RoleEntity>,
   ): Promise<RoleEntity | null> {
     const r = await this.prisma.role.update({ where: { id }, data });
-    return new RoleEntity(
-      r.id,
-      r.name,
-      r.status,
-      r.createdAt,
-      r.updatedAt,
-      r.deletedAt!,
-    );
+    return r;
   }
   async delete(id: string): Promise<void> {
-    await this.prisma.role.delete({ where: { id } });
+    await this.prisma.role.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
   }
 }

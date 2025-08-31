@@ -7,6 +7,7 @@ import { RedisModule } from './infrastructure/cache/redis.module';
 import { RabbitMQModuleX } from './infrastructure/mq/rabbitmq.module';
 import { StorageModule } from './infrastructure/storage/storage.module';
 import { RoleModule } from './presentation/role/role.module';
+import { AuthModule } from './presentation/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RoleModule } from './presentation/role/role.module';
     RabbitMQModuleX,
     StorageModule,
     RoleModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

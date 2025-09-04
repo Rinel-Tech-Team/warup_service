@@ -9,6 +9,11 @@ import { UpdateSuperadminUsecase } from 'src/applications/auth/superadmin/usecas
 import { LogoutSuperadminUsecase } from 'src/applications/auth/superadmin/usecases/logout-superadmin.usecase';
 import { JwtStrategy } from './jwt.strategy';
 import { SuperadminController } from './superadmin/controller/auth-superadmin.controller';
+import { CustomerController } from './customer/controller/auth-customer.controller';
+import { CustomerRepository } from 'src/domain/user/repositories/customer.repository';
+import { CustomerPrismaRepository } from 'src/infrastructure/repositories/customer.prisma.repository';
+import { RegisterCustomerUsecase } from 'src/applications/auth/customer/usecases/register-customer.usecase';
+import { EmailConsumer } from './customer/consumer/email.consumer';
 
 @Module({
   imports: [
@@ -17,7 +22,7 @@ import { SuperadminController } from './superadmin/controller/auth-superadmin.co
       signOptions: { expiresIn: '1d' },
     }),
   ],
-  controllers: [SuperadminController],
+  controllers: [SuperadminController, CustomerController],
   providers: [
     { provide: AdminRepository, useClass: AdminPrismaRepository },
     RegisterSuperAdminUsecase,
@@ -26,6 +31,9 @@ import { SuperadminController } from './superadmin/controller/auth-superadmin.co
     UpdateSuperadminUsecase,
     LogoutSuperadminUsecase,
     JwtStrategy,
+    { provide: CustomerRepository, useClass: CustomerPrismaRepository },
+    RegisterCustomerUsecase,
+    EmailConsumer,
   ],
 })
 export class AuthModule {}

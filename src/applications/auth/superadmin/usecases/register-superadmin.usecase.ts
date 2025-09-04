@@ -1,10 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AdminRepository } from 'src/domain/user/repositories/admin.repository';
-import { RedisService } from 'src/infrastructure/cache/redis.service';
-import { RabbitMQService } from 'src/infrastructure/mq/rabbitmq.service';
 import { RegisterSuperadminDTO } from 'src/presentation/auth/superadmin/dto/register-superadmin.dto';
 import * as bcrypt from 'bcrypt';
-import { SuperadminResponse } from '../response/superadmin.response';
+import { SuperadminResponse } from '../../../response/superadmin.response';
 
 @Injectable()
 export class RegisterSuperAdminUsecase {

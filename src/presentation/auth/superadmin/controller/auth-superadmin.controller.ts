@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Post,
   Put,
   Req,
@@ -28,12 +30,14 @@ export class SuperadminController {
   ) {}
 
   @Post('register')
+  @HttpCode(HttpStatus.CREATED)
   async registerSuperadmin(@Body() dto: RegisterSuperadminDTO) {
     const superadmin = await this.registerUC.execute(dto);
     return { data: superadmin, message: 'user created' };
   }
 
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   async loginSuperadmin(@Body() dto: LoginSuperadminDTO) {
     const token = await this.loginUC.execute(dto);
     return { data: token, message: 'login successfully' };
@@ -41,6 +45,7 @@ export class SuperadminController {
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
   async getProfileSuperadmin(@Req() req) {
     const profile = await this.getProfile.execute(req.user.userId);
     return { data: profile, message: 'get profile success' };
@@ -48,6 +53,7 @@ export class SuperadminController {
 
   @Put('profile')
   @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
   async updateProfileSuperadmin(@Req() req, @Body() dto: UpdateSuperadminDTO) {
     const updated = await this.updateUC.execute(req.user.userId, dto);
     return { data: updated, message: 'update profile success' };
@@ -55,6 +61,7 @@ export class SuperadminController {
 
   @Post('logout')
   @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
   async logoutSuperadmin(@Req() req) {
     return await this.logoutUC.execute(req.user.userId);
   }

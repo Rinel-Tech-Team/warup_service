@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AdminRepository } from '../../../../domain/user/repositories/admin.repository';
-import { SuperadminResponse } from '../response/superadmin.response';
+import { SuperadminResponse } from '../../../response/superadmin.response';
 
 @Injectable()
 export class GetProfileSuperadminUsecase {

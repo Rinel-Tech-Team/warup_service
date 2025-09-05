@@ -43,13 +43,9 @@ export class RegisterCustomerUsecase {
       roleId: role.id,
     });
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = Math.floor(100000 + Math.random() * 900000);
     const ttl = parseInt(process.env.OTP_TTL_SECONDS || '600');
-    await this.redis.setJson(
-      `otp:${customer.email}`,
-      { otp, attempts: 0 },
-      ttl,
-    );
+    await this.redis.setJson(`otp:${customer.id}`, { otp, attempts: 0 }, ttl);
 
     await this.rabbit.publish(process.env.AMQP_EXCHANGE!, 'email.otp', {
       to: dto.email,
@@ -58,8 +54,7 @@ export class RegisterCustomerUsecase {
     });
 
     return {
-      message: 'Registration successful, OTP sent to your email',
-      userId: customer.id,
+      user_id: customer.id,
     };
   }
 }

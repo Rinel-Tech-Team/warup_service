@@ -8,6 +8,7 @@ import { Prisma } from '@prisma/client';
 @Injectable()
 export class CustomerPrismaRepository implements CustomerRepository {
   constructor(private prisma: PrismaService) {}
+
   async create(customer: Partial<UserEntity>): Promise<UserEntity> {
     const data: Prisma.UserUncheckedCreateInput = {
       full_name: customer.full_name!,
@@ -30,5 +31,16 @@ export class CustomerPrismaRepository implements CustomerRepository {
   }
   async findByUsername(username: string): Promise<UserEntity | null> {
     return await this.prisma.user.findUnique({ where: { username } });
+  }
+
+  async update(id: string, customer: Partial<UserEntity>): Promise<UserEntity> {
+    return await this.prisma.user.update({
+      where: { id },
+      data: customer,
+    });
+  }
+
+  async findById(id: string): Promise<UserEntity | null> {
+    return await this.prisma.user.findUnique({ where: { id } });
   }
 }

@@ -14,6 +14,8 @@ import { CustomerRepository } from 'src/domain/user/repositories/customer.reposi
 import { CustomerPrismaRepository } from 'src/infrastructure/repositories/customer.prisma.repository';
 import { RegisterCustomerUsecase } from 'src/applications/auth/customer/usecases/register-customer.usecase';
 import { EmailConsumer } from './customer/consumer/email.consumer';
+import { VerifyOTPUsecase } from 'src/applications/auth/customer/usecases/verify-otp.usecase';
+import { ResendcodeOTPUsecase } from 'src/applications/auth/customer/usecases/resendcode-otp.usecase';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { EmailConsumer } from './customer/consumer/email.consumer';
     { provide: CustomerRepository, useClass: CustomerPrismaRepository },
     RegisterCustomerUsecase,
     EmailConsumer,
+    VerifyOTPUsecase,
+    ResendcodeOTPUsecase,
   ],
 })
 export class AuthModule {}

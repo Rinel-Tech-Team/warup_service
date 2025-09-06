@@ -55,6 +55,7 @@ export class RegisterCustomerUsecase {
 
     return {
       user_id: customer.id,
+      ttl: ttl,
     };
   }
 }
